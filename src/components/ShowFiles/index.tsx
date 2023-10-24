@@ -1,19 +1,40 @@
-/* eslint-disable jsx-a11y/alt-text */
-import styles from "./ShowFiles.module.scss";
-import fetchFiles from "../hooks/fetchFiles";
-import { AiFillFileText, AiFillFolder } from "react-icons/ai";
+//@ Packages
 import { useRouter } from "next/router";
+import { AiFillFileText, AiFillFolder } from "react-icons/ai";
+//@ Scripts
+import fetchFiles from "../hooks/fetchFiles";
 import useSessionHook from "../hooks/useSession";
+//@ Styles
+import styles from "./ShowFiles.module.scss";
 
+// Function to show folders and files
 const ShowFilesComponent = ( {parentId} : FolderStructure ) => {
   console.log("parentId", parentId);
   const { session } = useSessionHook();
-  const files = fetchFiles(parentId, session?.user.email);
+  const files = fetchFiles(parentId, session?.user?.email ?? "");
   const router = useRouter();
   const openFile = (fileLink: string) => {
     window.open(fileLink);
   }
   console.log("files", files);
+
+  function isImageFilename(filename: string) {
+    console.log("filename", filename);
+    const extension = getFileExtension(filename);
+    
+    const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp", ".svg", ".jfif"];
+    
+    return imageExtensions.includes(extension.toLowerCase());
+}
+
+  function getFileExtension(filename: string) {
+    const parts = filename?.split('.');
+    if (parts?.length > 1) {
+        return "." + parts[parts?.length - 1]?.toLowerCase();
+    } else {
+        return "";
+    }
+}
 
   return (
     <div className={styles["files-grid"]}>
@@ -26,8 +47,7 @@ const ShowFilesComponent = ( {parentId} : FolderStructure ) => {
             </>
           ) : (
             <>
-              {/* <AiFillFileText size={70}/> */}
-              <img className={styles["image-link"]} src={item.imageLink} />
+              {isImageFilename(item.imageName) ? <img className={styles["image-link"]} src={item.imageLink} /> : <AiFillFileText size={70}/>}
               <p>{item.imageName}</p>
             </>
           )}

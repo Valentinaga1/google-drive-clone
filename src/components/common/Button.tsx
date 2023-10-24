@@ -1,5 +1,4 @@
-import React from 'react'
-
+// Button component
 const Button = ({ btnClass, title, onClick }:  Button ) => {
   return (
     <button onClick={onClick} className={`btn ${btnClass}`}>{title}</button>

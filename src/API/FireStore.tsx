@@ -1,8 +1,10 @@
+//@ Packages
 import { database } from "../firebaseConfig";
 import { collection, addDoc, doc, updateDoc, getDoc } from "firebase/firestore";
 
 const files = collection(database, "files");
 
+// Function add files in firebase
 export const addFiles = async (
   imageLink: string,
   imageName: string,
@@ -24,6 +26,7 @@ export const addFiles = async (
   }
 };
 
+// Function add folders in firebase
 export const addFolder = async (payload: {
   folderName: string,
   isFolder: boolean,

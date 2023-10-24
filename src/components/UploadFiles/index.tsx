@@ -1,25 +1,29 @@
-import styles from "./Upload.module.scss";
-import Button from "../common/Button";
+//@ Packages
 import { ChangeEvent, useState } from "react";
+//@ Scripts
 import { fileUpload } from "@/API/FileUpload";
-import ProgressComponent from "../common/Progress";
 import { addFolder } from "@/API/FireStore";
+import ProgressComponent from "../common/Progress";
 import useSessionHook from "../hooks/useSession";
+import Button from "../common/Button";
+//@ Styles
+import styles from "./Upload.module.scss";
 
+// Component to upload files and create folders
 const UploadFiles = ({ parentId }: FolderStructure) => {
   const { session } = useSessionHook();
   const [isFileVisible, setIsFileVisible] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isFolderVissible, setIsFolderVissible] = useState(false);
   const [folderName, setFolderName] = useState("");
-  const [file, setFile] = useState({});
 
-  const uploadFile = async (e: ChangeEvent<HTMLInputElement>) => {
-    console.log("file", e);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    // const file = ;
-    fileUpload(e.target.files?.[0], setProgress, parentId, session?.user.email);
-    console.log("files", e.target.files[0]);
+  const userEmail = session?.user.email ?? "";
+
+  const uploadFile =  (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      fileUpload(selectedFile, setProgress, parentId, userEmail);
+    }
   }
 
   const createFolder = () => {
@@ -28,9 +32,9 @@ const UploadFiles = ({ parentId }: FolderStructure) => {
       isFolder: true,
       fileList: [],
       parentId: parentId || "",
-      userEmail: session?.user.email
+      userEmail: userEmail
     };
-    addFolder(payload);
+    void addFolder(payload);
     setFolderName("");
   }
 
@@ -54,7 +58,7 @@ const UploadFiles = ({ parentId }: FolderStructure) => {
       <Button
         title="Add a folder" 
         btnClass="btn btn-outline btn-success m-2"
-        onClick={e => {
+        onClick={() => {
           setIsFileVisible(false);
           setIsFolderVissible(!isFolderVissible);
         }}

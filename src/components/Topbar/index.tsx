@@ -1,37 +1,52 @@
-import styles from "./Topbar.module.scss";
-import useSessionHook from "../hooks/useSession";
-import Button from "../common/Button";
+//@ Packages
 import {signIn, signOut } from "next-auth/react"
 import { Router, useRouter } from "next/router";
+//@ Scripts
+import useSessionHook from "../hooks/useSession";
+import Button from "../common/Button";
+//@ Styles
+import styles from "./Topbar.module.scss";
 
+// Component with the btns and loggin user info
 const Topbar = () => {
   const { session } = useSessionHook();
   const router = useRouter();
-
+  
   return (
     <div>
-      <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-        {session && `Welcome ${session?.user.name}`}
-      </h1>
-      <div className={styles["auth-btn"]}>
+      <div className={styles["top-bar-container"]}>
         {session ? (
-          <img
-            onClick={() => {
-              router.replace("/");
-              signOut();
-            }} 
-            className={styles["profile-img"]}
-            src={session?.user.image} 
-          />
-          // <Button 
-          //   onClick={() => signOut()} 
-          //   btnClass="btn-primary" 
-          //   title="Sign Out"/>
+        <div className={styles["top-bar-sign-in-container"]}>
+          <div>
+            {router.asPath !== "/" && (
+              <Button 
+                onClick={() => router.replace("/")} 
+                btnClass="btn btn-outline btn-success" 
+                title="<Back"/>
+              )}
+          </div>
+          <div className={styles["top-bar-sign-in-right"]}>
+            <p className="font-extrabold tracking-tight text-white m-4">
+              {`${session?.user.name}`}
+              </p>
+              <img
+                onClick={() => {
+                  void router.replace("/");
+                  void signOut();
+                }} 
+                className={styles["profile-img"]}
+                src={session?.user?.image ?? ""} 
+              />
+            </div>
+        </div>
         ) : (
-          <Button 
-            onClick={() => signIn()} 
-            btnClass="btn-primary" 
-            title="Sign Up"/>
+         <div className={styles["top-bar-sign-in-container"]}>
+            <div></div>
+            <Button 
+              onClick={() => signIn()} 
+              btnClass="btn-primary" 
+              title="Sign Up"/>
+         </div>
         )}
       </div>
     </div>

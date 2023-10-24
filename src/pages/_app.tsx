@@ -1,7 +1,8 @@
+//@ Packages
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
-
+//@ Styles
 import "@/styles/globals.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({

@@ -24,6 +24,7 @@
   column-gap: 30px;
   row-gap: 30px;
   margin: 30px;
+  padding: 0 40px;
 }
 
 .image-link{
@@ -31,4 +32,8 @@
   height: 100px;
   object-fit: cover;
   border-radius: 10px;
+}
+
+.py-16 {
+  padding-top: 0rem !important;
 }

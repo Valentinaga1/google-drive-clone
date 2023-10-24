@@ -1,9 +1,14 @@
-import { storage } from "../firebaseConfig";
+//@ Packages
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+
+//@ Scripts
+import { storage } from "../firebaseConfig";
 import { addFiles } from "./FireStore";
 
-export const fileUpload = async (
-  file: any,
+//Function to upload the data in firebase
+export const fileUpload =  (
+  file: File,
+  // eslint-disable-next-line @typescript-eslint/ban-types
   setProgress: Function,
   parentId: string,
   userEmail: string,
@@ -24,9 +29,9 @@ export const fileUpload = async (
       alert(error);
     },
     () => {
-      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+      void getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
         console.log("downloadURL", downloadURL);
-        addFiles(downloadURL, file.name, parentId, userEmail);
+        void addFiles(downloadURL, file.name, parentId, userEmail);
         // addFiles(downloadURL, file.name, parentId, userEmail, ownerEmail);
       });
     }

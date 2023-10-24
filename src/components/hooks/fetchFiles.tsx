@@ -1,8 +1,11 @@
+//@ Packages
 import { database } from "@/firebaseConfig";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
+
 const files = collection(database, "files");
 
+// Function hook to get all the files from firebase
 const FetchFiles = ( parentId: string, userEmail: string ) => {
   const [fileList, setFileList] = useState<ArrayType>([{
     imageLink: "", id:""
