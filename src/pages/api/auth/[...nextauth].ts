@@ -8,11 +8,11 @@ export const authOptions = {
   // Configure one or more authentication providers
   providers: [
     GithubProvider(({
-      clientId: process.env.GITHUB_ID,
+      clientId: process.env.VERCEL_GITHUB_ID,
       clientSecret: process.env.VERCEL_GITHUB_SECRET,
     } as GithubAuth)),
     GoogleProvider(({
-      clientId: process.env.GITHUB_ID,
+      clientId: process.env.VERCEL_GITHUB_ID,
       clientSecret: process.env.VERCEL_GITHUB_SECRET,
     } as GithubAuth)),
   ],

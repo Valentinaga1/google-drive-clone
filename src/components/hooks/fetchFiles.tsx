@@ -8,7 +8,7 @@ const files = collection(database, "files");
 // Function hook to get all the files from firebase
 const FetchFiles = ( parentId: string, userEmail: string ) => {
   const [fileList, setFileList] = useState<ArrayType>([{
-    imageLink: "", id:""
+    imageLink: "", id:"", parentId:""
   }]);
 
   
@@ -19,19 +19,21 @@ const FetchFiles = ( parentId: string, userEmail: string ) => {
       if (!parentId) {
         onSnapshot(filteredFilesByEmailSession, (response) => {
            setFileList(response.docs.map(item => {
+            const data = item.data() as { parentId: string };
            return {
-             ...item.data(), id: item.id
+             ...data, id: item.id
            }
-         }).filter(item => item.parentId === "")
+         }).filter(item => item?.parentId === "")
         );
        });
       } else {
        onSnapshot(filteredFilesByEmailSession, (response) => {
            setFileList(response.docs.map(item => {
+          const data = item.data() as { parentId: string };
            return {
-             ...item.data(), id: item.id
+             ...data, id: item.id
            }
-         }).filter(item => item.parentId === parentId)
+         }).filter(item => item?.parentId === parentId)
         );
        });
       }
